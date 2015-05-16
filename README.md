@@ -255,7 +255,7 @@ The plugin can be installed via the Cordova command line interface:
 1) Navigate to the root folder for your phonegap project. 2) Run the command.
 
 ```sh
-cordova plugin add https://github.com/wildpeaks/PushPlugin.git
+cordova plugin add https://github.com/tjeason/PushPlugin.git
 ```
 
 ### Phonegap
@@ -265,7 +265,7 @@ The plugin can be installed using the Phonegap command line interface:
 1) Navigate to the root folder for your phonegap project. 2) Run the command.
 
 ```sh
-phonegap local plugin add https://github.com/wildpeaks/PushPlugin.git
+phonegap local plugin add https://github.com/tjeason/PushPlugin.git
 ```
 
 ### Plugman
@@ -307,7 +307,7 @@ To be called as soon as the device becomes ready.
 ```js
 $("#app-status-ul").append('<li>registering ' + device.platform + '</li>');
 if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
-    
+
     pushNotification.register(
     successHandler,
     errorHandler,
@@ -405,8 +405,8 @@ function onNotification(e) {
 		if ( e.foreground )
 		{
 			$("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
-			
-			// on Android soundname is outside the payload. 
+
+			// on Android soundname is outside the payload.
 			// On Amazon FireOS all custom attributes are contained within payload
 			var soundfile = e.soundname || e.payload.sound;
 			// if the notification contains a soundname, play it.

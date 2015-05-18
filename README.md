@@ -1,4 +1,4 @@
-# Cordova Push Notifications Plugin for Android, iOS 8+, WP8 and Amazon Fire OS
+# Cordova Push Notifications Plugin for Android, iOS 7 & 8, WP8 and Amazon Fire OS
 
 ---
 

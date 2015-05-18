@@ -241,7 +241,7 @@
 // reentrant method to drill down and surface all sub-dictionaries' key/value pairs into the top level json
 -(void)parseDictionary:(NSDictionary *)inDictionary intoJSON:(NSMutableString *)jsonString
 {
-  NSLog(@"Parsing JSON: " + jsonString);
+  NSLog(@"Parsing JSON.");
 
   NSArray         *keys = [inDictionary allKeys];
   NSString        *key;
@@ -269,7 +269,7 @@
 
 - (BOOL)checkNotificationType:(UIUserNotificationType)type
 {
-  NSLog(@"Checking notification type: " + type);
+  NSLog(@"Checking notification type");
 
   UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 
@@ -316,7 +316,7 @@
 }
 -(void)successWithMessage:(NSString *)message
 {
-    NSLog(@"Received message from server: " + server);
+    NSLog(@"Received message from server.");
 
     if (self.callbackId != nil) {
         CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:message];

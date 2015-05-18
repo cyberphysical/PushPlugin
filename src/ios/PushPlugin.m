@@ -37,7 +37,9 @@
 
 - (void)unregister:(CDVInvokedUrlCommand*)command;
 {
-	self.callbackId = command.callbackId;
+    NSLog(@"Unregistering device.");
+
+	  self.callbackId = command.callbackId;
 
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     [self successWithMessage:@"unregistered"];
@@ -45,6 +47,8 @@
 
 - (void)register:(CDVInvokedUrlCommand*)command;
 {
+  NSLog(@"Registering device.");
+
 	self.callbackId = command.callbackId;
 
     NSMutableDictionary* options = [command.arguments objectAtIndex:0];
@@ -145,6 +149,7 @@
 */
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSLog(@"Checking if device is registered for remote notifications...");
 
     NSMutableDictionary *results = [NSMutableDictionary dictionary];
     NSString *token = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""]
@@ -200,6 +205,8 @@
 
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+  NSLog(@"Failed to register device for push notifications.");
+
 	[self failWithMessage:@"" withError:error];
 }
 
@@ -234,32 +241,36 @@
 // reentrant method to drill down and surface all sub-dictionaries' key/value pairs into the top level json
 -(void)parseDictionary:(NSDictionary *)inDictionary intoJSON:(NSMutableString *)jsonString
 {
-    NSArray         *keys = [inDictionary allKeys];
-    NSString        *key;
+  NSLog(@"Parsing JSON: " + jsonString);
 
-    for (key in keys)
-    {
-        id thisObject = [inDictionary objectForKey:key];
+  NSArray         *keys = [inDictionary allKeys];
+  NSString        *key;
 
-        if ([thisObject isKindOfClass:[NSDictionary class]])
-            [self parseDictionary:thisObject intoJSON:jsonString];
-        else if ([thisObject isKindOfClass:[NSString class]])
-             [jsonString appendFormat:@"\"%@\":\"%@\",",
-              key,
-              [[[[inDictionary objectForKey:key]
-                stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
-                 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
-                 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"]];
-        else {
-            [jsonString appendFormat:@"\"%@\":\"%@\",", key, [inDictionary objectForKey:key]];
-        }
+  for (key in keys) {
+    id thisObject = [inDictionary objectForKey:key];
+
+    if ([thisObject isKindOfClass:[NSDictionary class]])
+      [self parseDictionary:thisObject intoJSON:jsonString];
+
+    else if ([thisObject isKindOfClass:[NSString class]])
+         [jsonString appendFormat:@"\"%@\":\"%@\",",
+          key,
+          [[[[inDictionary objectForKey:key]
+            stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"]
+             stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+             stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"]];
+    else {
+      [jsonString appendFormat:@"\"%@\":\"%@\",", key, [inDictionary objectForKey:key]];
     }
+  }
 }
 
 #ifdef __IPHONE_8_0
 
 - (BOOL)checkNotificationType:(UIUserNotificationType)type
 {
+  NSLog(@"Checking notification type: " + type);
+
   UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 
   return (currentSettings.types & type);
@@ -267,7 +278,9 @@
 
 #endif
 
-- (void)setApplicationIconBadgeNumber:(CDVInvokedUrlCommand *)command {
+- (void)setApplicationIconBadgeNumber:(CDVInvokedUrlCommand *)command
+{
+    NSLog(@"Attempting to icon badge number.");
 
     self.callbackId = command.callbackId;
 
@@ -278,17 +291,17 @@
 #ifdef __IPHONE_8_0
     // compile with Xcode 6 or higher (iOS SDK >= 8.0)
 
-    if(SYSTEM_VERSION_LESS_THAN(@"8.0"))
-    {
+    if(SYSTEM_VERSION_LESS_THAN(@"8.0")){
        application.applicationIconBadgeNumber = badge;
     }
+
     else
     {
-       if ([self checkNotificationType:UIUserNotificationTypeBadge])
-       {
+       if ([self checkNotificationType:UIUserNotificationTypeBadge]) {
           NSLog(@"badge number changed to %d", badge);
           application.applicationIconBadgeNumber = badge;
        }
+
        else
           NSLog(@"access denied for UIUserNotificationTypeBadge");
     }
@@ -303,8 +316,9 @@
 }
 -(void)successWithMessage:(NSString *)message
 {
-    if (self.callbackId != nil)
-    {
+    NSLog(@"Received message from server: " + server);
+
+    if (self.callbackId != nil) {
         CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:message];
         [self.commandDelegate sendPluginResult:commandResult callbackId:self.callbackId];
     }
@@ -312,6 +326,8 @@
 
 -(void)failWithMessage:(NSString *)message withError:(NSError *)error
 {
+    NSLog(@"ERROR >>> Unable to receive message.");
+
     NSString        *errorMessage = (error) ? [NSString stringWithFormat:@"%@ - %@", message, [error localizedDescription]] : message;
     CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:errorMessage];
 

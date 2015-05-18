@@ -44,6 +44,8 @@ static char launchNotificationKey;
 // to process notifications in cold-start situations
 - (void)createNotificationChecker:(NSNotification *)notification
 {
+	NSLog(@"Checking for notifications.");
+
 	if (notification)
 	{
 		NSDictionary *launchOptions = [notification userInfo];
@@ -62,8 +64,9 @@ static char launchNotificationKey;
     [pushHandler didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
+/*
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"didReceiveNotification");
+    NSLog(@"did receive notification");
 
     // Get application state for iOS4.x+ devices, otherwise assume active
     UIApplicationState appState = UIApplicationStateActive;
@@ -81,11 +84,12 @@ static char launchNotificationKey;
         self.launchNotification = userInfo;
     }
 }
+*/
 
-/*
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler
 {
-    NSLog(@"didReceiveNotification");
+    NSLog(@"Did receive notification");
 
     // Get application state for iOS4.x+ devices, otherwise assume active
     UIApplicationState appState = UIApplicationStateActive;
@@ -104,11 +108,11 @@ static char launchNotificationKey;
 
     handler(UIBackgroundFetchResultNewData);
 }
-*/
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 
-    NSLog(@"active");
+    NSLog(@"Application active.");
 
     //zero badge
     application.applicationIconBadgeNumber = 0;

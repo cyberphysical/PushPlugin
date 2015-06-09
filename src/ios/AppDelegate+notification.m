@@ -10,6 +10,8 @@
 #import "PushPlugin.h"
 #import <objc/runtime.h>
 
+const BOOL ZERO_BADGE = NO; // YES;
+
 static char launchNotificationKey;
 
 @implementation AppDelegate (notification)
@@ -114,8 +116,9 @@ static char launchNotificationKey;
 
     NSLog(@"Application active.");
 
-    //zero badge
-    //application.applicationIconBadgeNumber = 0;
+    // Check if zeroing (closing) the badge icon is flagged when app is loaded to the foreground.
+		if(ZERO_BADGE)
+    	application.applicationIconBadgeNumber = 0;
 
     if (self.launchNotification) {
         PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];

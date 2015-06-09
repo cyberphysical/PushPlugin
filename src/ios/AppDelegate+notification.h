@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+extern const BOOL ZERO_BADGE;
+
 @interface AppDelegate (notification)
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
